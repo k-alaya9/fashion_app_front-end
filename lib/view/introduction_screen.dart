@@ -1,4 +1,5 @@
 import 'package:fashionapp/controller/introductionController.dart';
+import 'package:fashionapp/view/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -80,7 +81,7 @@ class IntroductionScreen extends StatelessWidget {
                       const SizedBox(height: 30,),
                       InkWell(
                         onTap: (){
-                          // controller.finishIntro();
+                          Get.to(()=>LoginScreen());
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
