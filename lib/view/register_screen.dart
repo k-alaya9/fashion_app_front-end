@@ -1,4 +1,5 @@
 import 'package:fashionapp/controller/registerController.dart';
+import 'package:fashionapp/view/home.dart';
 import 'package:fashionapp/view/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -59,7 +60,7 @@ class Register_Screen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20)
                           )
                       ),
-                      onPressed: (){},
+                      onPressed: (){Get.offAll(()=>Home());},
                       child: controller.registerProgress.value != true
                           ? const  Text("Register",
                           style: TextStyle(color: Colors.white,fontSize: 16))

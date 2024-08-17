@@ -2,6 +2,8 @@ import 'package:fashionapp/view/introduction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'view/home.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -14,10 +16,16 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
-        useMaterial3: true,
-      ),
+        theme:
+        ThemeData(primarySwatch: Colors.blue, fontFamily: 'SignikaNegative'),
+
+        // Light theme
+        darkTheme: ThemeData.dark(), // Dark theme
+        themeMode: ThemeMode.system,
+      // theme: ThemeData(
+      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+      //   useMaterial3: true,
+      // ),
       defaultTransition: Transition.cupertino,
       home: IntroductionScreen()
     );

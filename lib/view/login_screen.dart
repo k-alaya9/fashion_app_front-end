@@ -1,4 +1,5 @@
 import 'package:fashionapp/controller/loginController.dart';
+import 'package:fashionapp/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -72,7 +73,9 @@ class LoginScreen extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(20)
                                     )
                                 ),
-                                onPressed: (){},
+                                onPressed: (){
+                                  Get.offAll(()=>Home());
+                                  },
                                 child: controller.loginProcess.value != true
                                     ? const  Text("Login",
                                     style: TextStyle(color: Colors.white,fontSize: 16))

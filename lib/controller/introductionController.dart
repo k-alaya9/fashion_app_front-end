@@ -31,6 +31,6 @@ class IntroductionController extends GetxController{
   void onClose() {
     super.onClose();
     timer!.cancel();
-    pageController.dispose();
+    // pageController.dispose();
   }
 }
