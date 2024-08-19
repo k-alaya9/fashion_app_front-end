@@ -1,4 +1,6 @@
 import 'package:fashionapp/controller/loginController.dart';
+import 'package:fashionapp/service/Api/TokenStorage.dart';
+import 'package:fashionapp/service/Api/authentication_api.dart';
 import 'package:fashionapp/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -73,8 +75,15 @@ class LoginScreen extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(20)
                                     )
                                 ),
-                                onPressed: (){
-                                  Get.offAll(()=>Home());
+                                onPressed: controller.loginProcess.value?null:()async{
+                                  if(formKey.currentState!.validate()){
+                                    controller.loginProcess(true);
+                                    await login(controller.emailController.value.text, controller.passwordController.value.text);
+                                    if(TokenStorage().getToken()!=null) {
+                                      Get.offAll(()=>Home());
+                                      controller.loginProcess(false);
+                                    }
+                                  }
                                   },
                                 child: controller.loginProcess.value != true
                                     ? const  Text("Login",

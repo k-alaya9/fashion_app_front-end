@@ -1,8 +1,11 @@
 import 'package:fashionapp/controller/registerController.dart';
+import 'package:fashionapp/service/Api/authentication_api.dart';
 import 'package:fashionapp/view/home.dart';
 import 'package:fashionapp/view/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../service/Api/TokenStorage.dart';
 
 class Register_Screen extends StatelessWidget {
   final GlobalKey<FormState> formkey=GlobalKey<FormState>();
@@ -60,7 +63,13 @@ class Register_Screen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20)
                           )
                       ),
-                      onPressed: (){Get.offAll(()=>Home());},
+                      onPressed:  controller.registerProgress.value?null:()async{
+                        if(formkey.currentState!.validate()&&controller.confirmPasswordController.text==controller.passwordController.text){
+                          await register_endPoint(controller.usernameController.value.text, controller.emailController.value.text, controller.passwordController.value.text);
+                          if(TokenStorage().getToken()!=null) {
+                            Get.offAll(()=>Home());
+                          }
+                        }},
                       child: controller.registerProgress.value != true
                           ? const  Text("Register",
                           style: TextStyle(color: Colors.white,fontSize: 16))

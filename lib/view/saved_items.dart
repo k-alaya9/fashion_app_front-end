@@ -1,7 +1,10 @@
 
+import 'package:fashionapp/model/clothesModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../service/Api/authentication_api.dart';
+import 'home.dart';
 import 'trendItem.dart';
 
 class SavedItemsPage extends StatefulWidget {
@@ -12,15 +15,17 @@ class SavedItemsPage extends StatefulWidget {
 }
 
 class _SavedItemsPageState extends State<SavedItemsPage> {
-  final List<Map<String, String>> trends = [
-    {'image': 'assets/4.jpg', 'title': 'Shirt', 'category': 'T-shirt'},
-    {'image': 'assets/2.jpg', 'title': 'Blouse', 'category': 'Top'},
-    {'image': 'assets/3.jpg', 'title': 'Sweater', 'category': 'Winter Wear'},
-    {'image': 'assets/3.jpg', 'title': 'Jeans', 'category': 'Pants'},
-    {'image': 'assets/1.jpg', 'title': 'Jacket', 'category': 'Outerwear'},
-    {'image': 'assets/3.jpg', 'title': 'Shoes', 'category': 'Footwear'},
-  ];
-
+  List<clothes>trends = [];
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+  getData()async{
+    trends.assignAll(await getSavedList());
+    setState(() {
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,10 +45,10 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: SingleChildScrollView(
+      body: trends.isEmpty?const Center(child: CircularProgressIndicator(color: Colors.black,),): SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TrendsSection(trends: trends),
           ],
         ),
@@ -53,7 +58,7 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
 }
 
 class TrendsSection extends StatelessWidget {
-  final List<Map<String, String>> trends;
+  final List<clothes> trends;
 
   TrendsSection({required this.trends});
 
@@ -73,94 +78,14 @@ class TrendsSection extends StatelessWidget {
       itemBuilder: (context, index) {
         final trend = trends[index];
         return TrendItem(
-          image: trend['image']!,
-          title: trend['title']!,
-          category: trend['category']!,
+          image:trend.image_url!,
+          title: trend.name!,
+          category: trend.description!,
+          id: trend.id!,
+          saved_id: trend.saved_id!,
         );
       },
     );
   }
 }
 
-class TrendItem extends StatefulWidget {
-  final String image;
-  final String title;
-  final String category;
-
-  TrendItem({
-    required this.image,
-    required this.title,
-    required this.category,
-  });
-
-  @override
-  _TrendItemState createState() => _TrendItemState();
-}
-
-class _TrendItemState extends State<TrendItem> {
-  var isBookmarked = false.obs; // Using RxBool for reactive state
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Get.to(TrendItemPage());
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          color: Colors.white,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8.0),
-                  topRight: Radius.circular(8.0),
-                ),
-                child: Image.asset(
-                  widget.image,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(widget.title,
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
-                      Spacer(),
-                      Obx(() => IconButton(
-                            onPressed: () {
-                              isBookmarked.value = !isBookmarked.value;
-                            },
-                            icon: Icon(
-                              isBookmarked.value
-                                  ? Icons.bookmark
-                                  : Icons.bookmark_border_outlined,
-                            ),
-                          )),
-                    ],
-                  ),
-                  SizedBox(height: 4),
-                  Text('Category: ${widget.category}',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 115, 115, 115),
-                          fontWeight: FontWeight.bold)),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

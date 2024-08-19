@@ -1,22 +1,26 @@
 
+import 'package:fashionapp/model/User.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../model/categoryModel.dart';
+import '../model/clothesModel.dart';
+import '../service/Api/authentication_api.dart';
 import '../view/home.dart';
 import '../view/profile.dart';
 import '../view/tryVirtual.dart';
 
 class HomeController extends GetxController {
   final PageController pageController = PageController();
-  final RxList<Map<String, String>> trends = [
-    {'image': 'assets/4.jpg', 'title': 'Shirt', 'category': 'T-shirt'},
-    {'image': 'assets/2.jpg', 'title': 'Blouse', 'category': 'Top'},
-    {'image': 'assets/3.jpg', 'title': 'Sweater', 'category': 'Winter Wear'},
-    {'image': 'assets/3.jpg', 'title': 'Jeans', 'category': 'Pants'},
-    {'image': 'assets/1.jpg', 'title': 'Jacket', 'category': 'Outerwear'},
-    {'image': 'assets/3.jpg', 'title': 'Shoes', 'category': 'Footwear'},
-  ].obs;
-
+  RxList<clothes> data=<clothes>[].obs;
+  Rx<User>? Signeduser=User(null, null).obs;
+  RxList<Category>categories=<Category>[].obs;
+  @override
+  void onInit() {
+    super.onInit();
+    getProfile();
+    getData();
+  }
   var selectedIndex = 0.obs;
 
   void onItemTapped(int index) {
@@ -32,5 +36,17 @@ class HomeController extends GetxController {
     //     // Get.off(() => ProfilePage());
     //     break;
     // }
+  }
+  getData()async{
+    var data=await getAllClothes();
+    this.data.assignAll(data);
+    this.data.refresh();
+    categories.assignAll(await getAllCategories());
+    categories.refresh();
+  }
+
+  getProfile()async{
+    Signeduser!.value=await getUser();
+    Signeduser!.refresh();
   }
 }

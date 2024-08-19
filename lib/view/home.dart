@@ -1,10 +1,14 @@
 
+import 'package:fashionapp/controller/ClothesPageController.dart';
+import 'package:fashionapp/view/clothes_page.dart';
 import 'package:fashionapp/view/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../controller/home_controller.dart';
+import '../service/Api/authentication_api.dart';
+import 'settings/setting.dart';
 import 'trendItem.dart';
 import 'tryVirtual.dart';
 
@@ -15,12 +19,12 @@ class Home extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       body:Obx(
-        ()=> IndexedStack(
+        ()=> controller.Signeduser!.value.username==null?  const  Center(child: CircularProgressIndicator(color: Colors.black,),): IndexedStack(
           index:controller.selectedIndex.value,
           children: [
             HomePage(),
             TryVirtual(),
-            ProfilePage(),
+            const ProfilePage(),
           ],
         ),
       ),
@@ -41,59 +45,46 @@ final HomeController controller=Get.find();
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.only(top: 35,),
+                margin: const EdgeInsets.only(top: 35,),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Welcome back, Khaled',
-                      style: TextStyle(
+                     Text(
+                      'Welcome back,${controller.Signeduser!.value.username}',
+                      style:  const  TextStyle(
                           color: Colors.black,
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
                     ),
-                    Container(
-                      width: 50,
-                      // margin: EdgeInsets.only(left: 75),
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white54,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            spreadRadius: 0.8,
-                            blurRadius: 4,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                          child: Center(
-                            child: Text(
-                              "K",
-                              style: TextStyle(
-                                fontSize: 27,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                    InkWell(
+                      onTap: (){Get.to(()=>SettingsPage());},
+                      child: Container(
+                        width: 50,
+                        // margin: EdgeInsets.only(left: 75),
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.white54,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              spreadRadius: 0.8,
+                              blurRadius: 4,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                            child:  Center(
+                              child: Text(
+                                controller.Signeduser!.value.username!.characters.first,
+                                style: const TextStyle(
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
-                          ),
-                      // child: ClipRRect(
-                      //   borderRadius: BorderRadius.circular(10),
-                      //   child: Padding(
-                      //     padding: EdgeInsets.all(10.0),
-                      //     child: Center(
-                      //       child: Text(
-                      //         "K",
-                      //         style: TextStyle(
-                      //           fontSize: 27,
-                      //           fontWeight: FontWeight.bold,
-                      //           color: Colors.black,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      ),
                     ),
                   ],
                 ),
@@ -106,7 +97,7 @@ final HomeController controller=Get.find();
                       controller: controller.pageController,
                       children: [
                         Container(
-                          margin: EdgeInsets.all(8),
+                          margin: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(9.1),
                           ),
@@ -117,8 +108,8 @@ final HomeController controller=Get.find();
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.all(2),
-                          margin: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(2),
+                          margin: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(9.1),
                           ),
@@ -129,8 +120,8 @@ final HomeController controller=Get.find();
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.all(2),
-                          margin: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(2),
+                          margin: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(9.1),
                           ),
@@ -146,11 +137,11 @@ final HomeController controller=Get.find();
                   Positioned(
                     height: 360,
                     child: Container(
-                      margin: EdgeInsets.all(170),
+                      margin: const EdgeInsets.all(170),
                       child: SmoothPageIndicator(
                         controller: controller.pageController,
                         count: 3,
-                        effect: WormEffect(
+                        effect: const WormEffect(
                           dotWidth: 10.0,
                           dotHeight: 10.0,
                           spacing: 16.0,
@@ -160,7 +151,7 @@ final HomeController controller=Get.find();
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                 ],
               ),
 
@@ -169,7 +160,7 @@ final HomeController controller=Get.find();
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
                   alignment: AlignmentDirectional.topStart,
-                  child: Text(
+                  child: const Text(
                     'Categories',
                     style: TextStyle(
                         color: Colors.black,
@@ -178,29 +169,28 @@ final HomeController controller=Get.find();
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               SizedBox(
                 height: 100,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    CategoryItem(title: 'T-Shirt', image: "assets/tshirt.png"),
-                    CategoryItem(title: 'Blouse', image: 'assets/blouse.png'),
-                    CategoryItem(title: 'Sweater', image: 'assets/sweater.png'),
-                    CategoryItem(title: 'Kimono', image: 'assets/judo.png'),
-                    CategoryItem(title: 'Skirt', image: 'assets/skirt.png'),
-                    CategoryItem(title: 'Dress', image: 'assets/dress.png'),
-                  ],
+                child: Obx(
+                  ()=>controller.categories.isEmpty?const Center(child: CircularProgressIndicator(color: Colors.black,),): ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: controller.categories.length,
+                    itemBuilder: (context, index) {
+                      var category=controller.categories[index];
+                      return CategoryItem(id:category.id!,title:category.name! ,image: category.image_url!,);
+                    },
+                  ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Trends Section
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
-                  margin: EdgeInsets.only(top: 2),
+                  margin: const EdgeInsets.only(top: 2),
                   alignment: AlignmentDirectional.topStart,
-                  child: Text(
+                  child: const Text(
                     'Trends',
                     style: TextStyle(
                         color: Colors.black,
@@ -209,8 +199,9 @@ final HomeController controller=Get.find();
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TrendsSection(),
+              const SizedBox(height: 120),
             ],
           ),
         ),
@@ -221,38 +212,45 @@ final HomeController controller=Get.find();
 }
 
 class CategoryItem extends StatelessWidget {
+  final int id;
   final String title;
   final String image;
 
-  const CategoryItem({required this.title, required this.image});
+  const CategoryItem({required this.id,required this.title, required this.image});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        print(id);
+    ClothespageController controller= Get.put(ClothespageController());
+        controller.id.value=id;
+        print(controller.id.value);
+        Get.to(()=>ClothesPage(name: title, id: id));
+      },
       child: Container(
         width: 80,
-        margin: EdgeInsets.symmetric(horizontal: 8.0),
-        padding: EdgeInsets.all(8.0),
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.all(0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.0),
           color: Colors.grey[100],
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: Offset(0, 3),
-            ),
-          ],
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Colors.black.withOpacity(0.1),
+          //     spreadRadius: 1,
+          //     blurRadius: 5,
+          //     offset: const Offset(-3, -3),
+          //   ),
+          // ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(width: 50, child: Image.asset(image, fit: BoxFit.fill)),
-            SizedBox(height: 7),
+            Container(width: 50, child: Image.network(image, fit: BoxFit.fill)),
+            const SizedBox(height: 7),
             Text(title,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 16,
                     color: Colors.black,
                     fontWeight: FontWeight.bold)),
@@ -268,40 +266,45 @@ class TrendsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
+    return Obx(() => controller.data.value.isEmpty? const Center(child: CircularProgressIndicator(color: Colors.black,),):
+       GridView.builder(
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 0.7,
           crossAxisSpacing: 16.0,
           mainAxisSpacing: 16.0,
         ),
-        itemCount: controller.trends.length,
+        itemCount: controller.data.length,
         itemBuilder: (context, index) {
-          final trend = controller.trends[index];
+          final trend = controller.data[index];
+          print(trend);
           return TrendItem(
-            image: trend['image']!,
-            title: trend['title']!,
-            category: trend['category']!,
+            id: trend.id!,
+            image: trend.image_url!,
+            title: trend.name!,
+            category: trend.description!,
+            saved_id: trend.saved_id!,
           );
         },
-      );
-    });
+      ));
   }
 }
 
 class TrendItem extends StatefulWidget {
+  final int id;
   final String image;
   final String title;
   final String category;
-
+  int saved_id;
   TrendItem({
+    required this.id,
     required this.image,
     required this.title,
     required this.category,
+    required this.saved_id
   });
 
   @override
@@ -315,7 +318,7 @@ class _TrendItemState extends State<TrendItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => TrendItemPage());
+        Get.to(() => TrendItemPage(id: widget.id,));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -327,12 +330,12 @@ class _TrendItemState extends State<TrendItem> {
           children: [
             Expanded(
               child: ClipRRect(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(8.0),
                   topRight: Radius.circular(8.0),
                 ),
-                child: Image.asset(
-                  widget.image,
+                child: Image.network(
+                  "${widget.image}",
                   fit: BoxFit.cover,
                   width: double.infinity,
                 ),
@@ -346,26 +349,34 @@ class _TrendItemState extends State<TrendItem> {
                   Row(
                     children: [
                       Text(widget.title,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold)),
-                      Spacer(),
+                      const Spacer(),
                       IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isBookmarked = !isBookmarked;
-                          });
-                        },
+                         onPressed: () async{
+                                // isBookmarked.value = !isBookmarked.value;
+                                if(widget.saved_id==0){
+                                widget.saved_id=await saveClothItem(widget.id!);
+                                }
+                                else{
+                                  await unsaveClothItem(widget.id!);
+                                  widget.saved_id=0;
+                                }
+                                setState(() {
+                                  
+                                });
+                              },
                         icon: Icon(
-                          isBookmarked
+                          widget.saved_id!=0
                               ? Icons.bookmark
                               : Icons.bookmark_border_outlined,
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text('Category: ${widget.category}',
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Color.fromARGB(255, 115, 115, 115),
                           fontWeight: FontWeight.bold)),
                 ],
@@ -385,7 +396,7 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       height: 80,
       child: Stack(
         clipBehavior: Clip.none,
@@ -405,7 +416,7 @@ class CustomBottomNavBar extends StatelessWidget {
                     color: Colors.black.withOpacity(0.1),
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: Offset(0, -2),
+                    offset: const Offset(0, -2),
                   ),
                 ],
               ),
@@ -465,7 +476,7 @@ class CustomBottomNavBar extends StatelessWidget {
           Colors.transparent,
           borderRadius: BorderRadius.circular(15.0),
         ),
-        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

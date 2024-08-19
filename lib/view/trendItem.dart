@@ -1,8 +1,15 @@
+import 'package:fashionapp/model/clothesModel.dart';
+import 'package:fashionapp/service/Api/authentication_api.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TrendItemPage extends StatefulWidget {
-  const TrendItemPage({super.key});
+  int? id;
+  String? image_url;
+  String? name;
+  String? description;
+  int? saved_id;
+  TrendItemPage({this.id,super.key});
 
   @override
   State<TrendItemPage> createState() => _TrendItemPageState();
@@ -10,7 +17,21 @@ class TrendItemPage extends StatefulWidget {
 
 class _TrendItemPageState extends State<TrendItemPage> {
   var isBookmarked = false.obs; // Using RxBool for reactive state
-
+@override
+  void initState() {
+    super.initState();
+    getData();
+  }
+  getData()async{
+    clothes cloth=await getClothById(widget.id!);
+    widget.name=cloth.name;
+    widget.image_url=cloth.image_url;
+    widget.description=cloth.description;
+    widget.saved_id=cloth.saved_id;
+    setState(() {
+      
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,15 +48,15 @@ class _TrendItemPageState extends State<TrendItemPage> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: Padding(
+      body: widget.image_url==null|| widget.name==null || widget.description==null ? const Center(child: CircularProgressIndicator(color: Colors.black,),):    Padding(
         padding: EdgeInsets.all(1),
         child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
                 width: double.infinity * 0.4,
-                child: Image.asset(
-                  "assets/4.jpg",
+                child: Image.network(
+                  "${widget.image_url}",
                   fit: BoxFit.contain,
                 ),
               ),
@@ -61,7 +82,7 @@ class _TrendItemPageState extends State<TrendItemPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Shirt',
+                      widget.name!,
                       style: TextStyle(
                         fontSize: 34,
                         fontWeight: FontWeight.bold,
@@ -69,7 +90,7 @@ class _TrendItemPageState extends State<TrendItemPage> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      'The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive.',
+                      widget.description!,
                       style: TextStyle(
                         fontSize: 21,
                         color: Colors.grey[600],
@@ -92,20 +113,30 @@ class _TrendItemPageState extends State<TrendItemPage> {
                               ),
                             ],
                           ),
-                          child: Obx(
-                            () => IconButton(
-                              onPressed: () {
-                                isBookmarked.value = !isBookmarked.value;
+                          child: 
+                            IconButton(
+                              onPressed: () async{
+                                // isBookmarked.value = !isBookmarked.value;
+                                if(widget.saved_id==0){
+                                widget.saved_id=await saveClothItem(widget.id!);
+                                }
+                                else{
+                                  await unsaveClothItem(widget.id!);
+                                  widget.saved_id=0;
+                                }
+                                    setState(() {
+                                      
+                                    });
                               },
                               icon: Icon(
-                                isBookmarked.value
+                               widget.saved_id!=0
                                     ? Icons.bookmark
                                     : Icons.bookmark_border,
                                 color: Colors.black,
                                 size: 40,
                               ),
                             ),
-                          ),
+                         
                         ),
                         Spacer(),
                         Container(

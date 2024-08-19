@@ -1,3 +1,5 @@
+import 'package:fashionapp/controller/home_controller.dart';
+import 'package:fashionapp/service/Api/authentication_api.dart';
 import 'package:fashionapp/view/introduction_screen.dart';
 import 'package:fashionapp/view/settings/account.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +9,8 @@ import 'about_us.dart';
 
 class SettingsPage extends StatelessWidget {
   final _selectedIndex = 0.obs;
+  
 
-  void _onTileTap(int index) {
-    _selectedIndex.value = index;
-    Get.snackbar('Selected', 'Selected: $index');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class SettingsPage extends StatelessWidget {
           },
           icon: Icon(Icons.arrow_back_ios, color: Colors.black),
         ),
-        title: Text(
+        title: const  Text(
           'Settings',
           style: TextStyle(color: Colors.black),
         ),
@@ -128,6 +127,8 @@ class SettingsTile extends StatelessWidget {
 }
 
 class UserInfoTile extends StatelessWidget {
+    final HomeController controller= Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -151,7 +152,7 @@ class UserInfoTile extends StatelessWidget {
             radius: 24,
             backgroundColor: Colors.black,
             child: Text(
-              'K',
+              controller.Signeduser!.value.username!.characters.first,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -164,7 +165,7 @@ class UserInfoTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'khaled alaya',
+                controller.Signeduser!.value.username!,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
@@ -172,7 +173,7 @@ class UserInfoTile extends StatelessWidget {
               ),
               SizedBox(height: 4),
               Text(
-                'khaled@gmail.com',
+                controller.Signeduser!.value.email!,
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey[600],
@@ -182,7 +183,8 @@ class UserInfoTile extends StatelessWidget {
           ),
           Spacer(),
           IconButton(
-            onPressed: () {
+            onPressed: ()async{
+              await logout();
               Get.offAll(()=>IntroductionScreen());
             },
             icon: Icon(Icons.exit_to_app, color: Colors.black, size: 30),

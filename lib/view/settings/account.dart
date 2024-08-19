@@ -1,13 +1,17 @@
+import 'package:fashionapp/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controller/account_controller.dart';
 
 class AccountPage extends StatelessWidget {
+  final HomeController homecontroller= Get.find();
   final AccountController controller = Get.put(AccountController());
 
   @override
   Widget build(BuildContext context) {
+    controller.emailController.text=homecontroller.Signeduser!.value.email!;
+    controller.usernameController.text=homecontroller.Signeduser!.value.username!;
     return Scaffold(
       // backgroundColor: Colors.white,
       appBar: AppBar(
@@ -54,7 +58,7 @@ class AccountPage extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     backgroundColor: Colors.black,
                     foregroundColor: Colors.white,
