@@ -1,16 +1,24 @@
 # fashionapp
 
-A new Flutter project.
+A  Flutter project.
 
-## Getting Started
+This project is a simple application for fashion products. It includes a home page with a list of fashion products 
+and a product details page with a virtual try on feature
+you can save fasion prodcuts to try them later 
+you can also search for fashion products by category
 
-This project is a starting point for a Flutter application.
+it is also contains a simple Ai system to recommend fashion products based on user's preferences 
 
-A few resources to get you started if this is your first Flutter project:
+using Getx package for state managment
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+using Getx Storage package for local storage
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+using django frame work as back-end
+
+# backend repo
+https://github.com/k-alaya9/fashion_app_back-end
+
+# Contact us
+for more info 
+contact me at my social media account or on my github
+https://github.com/k-alaya9
