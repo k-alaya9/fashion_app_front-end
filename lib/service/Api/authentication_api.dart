@@ -419,3 +419,32 @@ Future<void> submitFeedback(int id,int rate,description) async {
     print('Response body: ${response.body}');
   }
 }
+
+tryVritualOn(String imagePath,String imagePath2)async{
+      final String url = 'http://$ip_address/api/experiment';
+
+      final String bearerToken =TokenStorage().getToken()!;
+
+      var request= http.MultipartRequest('POST',Uri.parse(url));
+      request.headers.addAll({
+          'Authorization': 'Bearer $bearerToken',
+          // 'Content-Type': 'application/json',
+        },);
+      request.files.add(await http.MultipartFile.fromPath('user_photo_path', imagePath));
+      request.files.add(await http.MultipartFile.fromPath('clothes_photo_path', imagePath2));
+      
+      var response= await request.send();
+      
+      if(response.statusCode==201){
+        print('Virtual try on successful');
+        var data=jsonDecode(await response.stream.bytesToString());
+        print(data);
+        return data;
+      }
+      else{
+        print('Failed to perform virtual try on: ${response.statusCode}');
+        var data=jsonDecode(await response.stream.bytesToString());
+        print(data);
+      }
+
+}

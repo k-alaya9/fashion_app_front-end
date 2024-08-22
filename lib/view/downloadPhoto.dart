@@ -10,97 +10,101 @@ class ImageScreen extends StatelessWidget {
     final double screenHeight = MediaQuery.of(context).size.height;
     final CameraController controller= Get.find();
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            height: screenHeight,
-            width: screenWidth,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                    'assets/elegant-fashionable-woman-white-jacket-dress-posing-ankle-boot-black-leather-full-length.jpg'), // Add your image asset here
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          // Top left icons
-          Positioned(
-            top: 50,
-            left: 20,
-            child: Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.close, color: Colors.black, size: 40),
-                  onPressed: () {
-                    Get.off(()=>HomePage());
-                  },
+      body: Obx(
+       ()=>controller.tryVirtualProgress.value? const Center(child: CircularProgressIndicator(color: Colors.black,),):Stack(
+          children: [
+            Container(
+              height: screenHeight,
+              width: screenWidth,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(
+                      controller.experiment.value), 
+                  fit: BoxFit.cover,
                 ),
-              ],
-            ),
-          ),
-          // Top right icons
-          Positioned(
-            top: 50,
-            right: 20,
-            child: IconButton(
-              icon: Icon(
-                Icons.thumbs_up_down_outlined,
-                color: Colors.black,
-                size: 50,
               ),
-              onPressed: () {
-                _showRateUsDialog(context);
-              },
             ),
-          ),
-          // Bottom button
-          Positioned(
-            bottom: 20,
-            left: 10,
-            right: 0,
-            child: Row(children: [
-              SizedBox(
-                height: 65,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+            // Top left icons
+            Positioned(
+              top: 50,
+              left: 20,
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.close, color: Colors.black, size: 40),
+                    onPressed: () {
+                      Get.off(()=>HomePage());
+                    },
+                  ),
+                ],
+              ),
+            ),
+            // Top right icons
+            Positioned(
+              top: 50,
+              right: 20,
+              child: IconButton(
+                icon: const Icon(
+                  Icons.thumbs_up_down_outlined,
+                  color: Colors.black,
+                  size: 50,
+                ),
+                onPressed: () {
+                  _showRateUsDialog(context);
+                },
+              ),
+            ),
+            // Bottom button
+            Positioned(
+              bottom: 20,
+              left: 10,
+              right: 0,
+              child: Row(children: [
+                SizedBox(
+                  height: 65,
+                  child: ElevatedButton(
+                    onPressed: () {
+                       Get.off(()=>HomePage());
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      backgroundColor: Colors.white,
                     ),
-                    backgroundColor: Colors.white,
-                  ),
-                  child: Icon(
-                    Icons.refresh,
-                    color: Colors.black,
-                    size: 35,
-                  ),
-                ),
-              ),
-              SizedBox(width: 10),
-              Container(
-                width: MediaQuery.of(context).size.width - 105,
-                height: 70,
-                child: ElevatedButton(
-                  onPressed: () async{
-                    print("Started");
-                    await controller.downloadImageToGallery("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlROcXWBsxzaZwXERUSfV6eD92_-KLFAvjbg&s");
-                    print("end");
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    backgroundColor: Colors.black,
-                    // padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                  ),
-                  child: Text(
-                    'Download',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    child: const  Icon(
+                      Icons.refresh,
+                      color: Colors.black,
+                      size: 35,
+                    ),
                   ),
                 ),
-              ),
-            ]),
-          ),
-        ],
+                const SizedBox(width: 10),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - 105,
+                  height: 70,
+                  child: ElevatedButton(
+                    onPressed: () async{
+                      print("Started");
+                      await controller.downloadImageToGallery(controller.experiment.value);
+                      print("end");
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      backgroundColor: Colors.black,
+                      // padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                    ),
+                    child: const Text(
+                      'Download',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+                ),
+              ]),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -127,10 +131,10 @@ class _RateUsDialogState extends State<RateUsDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(15.0)),
       ),
-      title: Text(
+      title: const Text(
         'Rate Us',
         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
@@ -138,12 +142,12 @@ class _RateUsDialogState extends State<RateUsDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
+          const Text(
             'How would you rate our app?',
             style: TextStyle(fontSize: 16),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(5, (index) {
@@ -161,16 +165,16 @@ class _RateUsDialogState extends State<RateUsDialog> {
               );
             }),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           if (_rating > 0) // Show feedback section only if a rating is given
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Feedback:',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
                   width: double.infinity,
                   height: 100,
@@ -183,7 +187,7 @@ class _RateUsDialogState extends State<RateUsDialog> {
                         borderRadius: BorderRadius.circular(15),
                         borderSide: BorderSide.none,
                       ),
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 16.0),
                     ),
                     maxLines: 3,
@@ -191,7 +195,7 @@ class _RateUsDialogState extends State<RateUsDialog> {
                 ),
               ],
             ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               // Handle the submission logic here
@@ -203,10 +207,10 @@ class _RateUsDialogState extends State<RateUsDialog> {
               backgroundColor: Colors.black,
               foregroundColor: Colors.white,
 
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-              textStyle: TextStyle(fontSize: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+              textStyle: const TextStyle(fontSize: 16),
             ),
-            child: Text('Rate'),
+            child: const Text('Rate'),
           ),
         ],
       ),

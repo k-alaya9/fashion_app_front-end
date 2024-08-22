@@ -1,3 +1,4 @@
+import 'package:fashionapp/service/Api/authentication_api.dart';
 import 'package:get/get.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,7 +11,8 @@ class CameraController extends GetxController {
   var selectedImage = Rx<File?>(null);
   var selectedImage2 = Rx<File?>(null);
   final ImagePicker _picker = ImagePicker();
-
+  var experiment=''.obs;
+  RxBool tryVirtualProgress=false.obs;
   @override
   onInit()async{
     super.onInit();
@@ -35,23 +37,23 @@ class CameraController extends GetxController {
 
   Future<void> downloadImageToGallery(String url) async {
     try {
-      // Fetch the image from the URL
+
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
-        // Get the temporary directory
+
         final directory = await getTemporaryDirectory();
 
-        // Define the image's full path
+
         final filePath = path.join(directory.path, "image.png");
 
-        // Create a file on the device
+
         final file = File(filePath);
 
-        // Write the image data to the file
+
         await file.writeAsBytes(response.bodyBytes);
 
-        // Save the image to the gallery
+
         final result = await ImageGallerySaver.saveFile(file.path);
 
         if (result['isSuccess']) {
@@ -69,6 +71,13 @@ class CameraController extends GetxController {
     } catch (e) {
       print('Error: $e');
     }
+  }
+
+  tryVirtual()async{
+    tryVirtualProgress(true);
+    var data=await tryVritualOn(selectedImage.value!.path, selectedImage2.value!.path);
+    experiment(data['models_photo_path']);
+    tryVirtualProgress(false);
   }
 
 }
