@@ -77,6 +77,7 @@ class CameraController extends GetxController {
     tryVirtualProgress(true);
     var data=await tryVritualOn(selectedImage.value!.path, selectedImage2.value!.path);
     experiment(data['models_photo_path']);
+    print(experiment.value);
     tryVirtualProgress(false);
   }
 

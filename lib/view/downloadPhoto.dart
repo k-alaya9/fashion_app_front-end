@@ -3,6 +3,8 @@ import 'package:fashionapp/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../service/Api/authentication_api.dart';
+
 class ImageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class ImageScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
-                      controller.experiment.value), 
+                      "http://${ip_address}${controller.experiment.value}"),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -33,7 +35,7 @@ class ImageScreen extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.close, color: Colors.black, size: 40),
                     onPressed: () {
-                      Get.off(()=>HomePage());
+                      Get.off(()=>Home());
                     },
                   ),
                 ],
@@ -64,7 +66,7 @@ class ImageScreen extends StatelessWidget {
                   height: 65,
                   child: ElevatedButton(
                     onPressed: () {
-                       Get.off(()=>HomePage());
+                       Get.off(()=>Home());
                     },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -86,7 +88,8 @@ class ImageScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () async{
                       print("Started");
-                      await controller.downloadImageToGallery(controller.experiment.value);
+                      print("http://${ip_address}${controller.experiment.value}");
+                      await controller.downloadImageToGallery("http://${ip_address}${controller.experiment.value}");
                       print("end");
                     },
                     style: ElevatedButton.styleFrom(

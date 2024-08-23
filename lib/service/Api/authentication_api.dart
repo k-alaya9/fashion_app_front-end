@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../../model/User.dart';
 
-var ip_address='10.0.2.2:8000';
+var ip_address='192.168.241.137:8000';
 register_endPoint(username,email,password)async{
   var request = http.Request('GET', Uri.parse('http://$ip_address/api/auth/register/'));
 
@@ -421,7 +421,7 @@ Future<void> submitFeedback(int id,int rate,description) async {
 }
 
 tryVritualOn(String imagePath,String imagePath2)async{
-      final String url = 'http://$ip_address/api/experiment';
+      final String url = 'http://$ip_address/api/experiment/';
 
       final String bearerToken =TokenStorage().getToken()!;
 

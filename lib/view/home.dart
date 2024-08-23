@@ -50,7 +50,7 @@ final HomeController controller=Get.find();
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                      Text(
-                      'Welcome back,${controller.Signeduser!.value.username}',
+                      'Welcome back, ${controller.Signeduser!.value.username}',
                       style:  const  TextStyle(
                           color: Colors.black,
                           fontSize: 20,

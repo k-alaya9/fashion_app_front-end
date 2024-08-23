@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 
         // Light theme
         darkTheme: ThemeData.dark(), // Dark theme
-        themeMode: ThemeMode.system,
+        themeMode: ThemeMode.light,
       // theme: ThemeData(
       //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
       //   useMaterial3: true,

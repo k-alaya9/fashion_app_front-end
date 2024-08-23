@@ -51,6 +51,7 @@ class TryVirtual2 extends StatelessWidget {
               right: 20,
               child: Transform.rotate(angle:  Math.pi,child: IconButton(onPressed: (){
                 if(cameraController.selectedImage2.value!=null) {
+                  cameraController.tryVirtual();
                   Get.to(()=>ImageScreen());
                 }}, icon: Icon(Icons.arrow_back_ios,color: Colors.black, size: 40)))
           ),
